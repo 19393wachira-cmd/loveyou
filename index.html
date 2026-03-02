@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Love Healing</title>
+<style>
+body{
+    margin:0;
+    font-family:sans-serif;
+    background:linear-gradient(to bottom,#ffc0cb,#ff99cc);
+    overflow:hidden;
+}
+
+/* หัวใจลอย */
+.heart{
+    position:fixed;
+    color:white;
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* หน้า */
+.page{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+}
+.active{display:flex;}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#ff4da6;
+    color:white;
+    cursor:pointer;
+    margin:5px;
+}
+input,textarea{
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    margin:5px;
+    width:250px;
+}
+.box{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    width:300px;
+}
+
+/* กล่องควบคุมเพลง */
+.music-box{
+    position:fixed;
+    top:10px;
+    right:10px;
+    background:white;
+    padding:10px;
+    border-radius:15px;
+}
+</style>
+</head>
+<body>
+
+<!-- 🎵 เพลงพื้นหลัง -->
+<audio id="bgMusic" loop>
+    <source src="Rokudenashi One Voice【Official Music Video】.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🎛 ปุ่มควบคุมเพลง -->
+<div class="music-box">
+    <button onclick="toggleMusic()">🔊 เปิด/ปิด</button><br>
+    <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="changeVolume(this.value)">
+</div>
+
+<!-- หัวใจลอย -->
+<script>
+for(let i=0;i<20;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+15)+"px";
+    heart.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(heart);
+}
+</script>
+
+<!-- หน้า Login -->
+<div id="login" class="page active">
+    <div class="box">
+        <h1>🌸 Love Healing 💗</h1>
+        <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ">
+        <br>
+        <button onclick="enterSite()">เข้าสู่โลกความรัก</button>
+    </div>
+</div>
+
+<!-- หน้าเลือกหมวด -->
+<div id="menu" class="page">
+    <div class="box">
+        <h2 id="welcome"></h2>
+        <p>ฮีลใจให้คุณ</p>
+        <button onclick="openForm()">💌 ถ้าเหนื่อยกดไป</button>
+    </div>
+</div>
+
+<!-- หน้าเล่าเรื่อง -->
+<div id="formPage" class="page">
+    <div class="box">
+        <h3>เล่าให้เราฟังได้เลยนะ 💞</h3>
+        <textarea id="story" rows="4" placeholder="พิมพ์ความรู้สึกของคุณ"></textarea>
+        <br>
+        <button onclick="submitStory()">ส่งคำตอบ</button>
+    </div>
+</div>
+
+<!-- หน้าอ่านฮีลใจ -->
+<div id="result" class="page">
+    <div class="box">
+        <h3>💖 ฮีลใจให้คุณ</h3>
+        <p>เธอมีค่ามากกว่าที่เธอคิด
+และสมควรได้รับความรักที่ดีที่สุดเสมอ 💞</p>
+        <button onclick="backMenu()">กลับเมนู</button>
+    </div>
+</div>
+
+<script>
+let music=document.getElementById("bgMusic");
+
+function enterSite(){
+    let name=document.getElementById("username").value;
+    if(name=="") return alert("พิมพ์ชื่อก่อนนะ 💗");
+
+    document.getElementById("welcome").innerText="สวัสดี "+name+" 💖";
+    music.play(); // เริ่มเพลงตอนกดเข้าเว็บ
+    showPage("menu");
+}
+
+function openForm(){
+    showPage("formPage");
+}
+
+function submitStory(){
+    let text=document.getElementById("story").value;
+    if(text=="") return alert("เล่าให้เราฟังก่อนนะ 🌸");
+    showPage("result");
+}
+
+function backMenu(){
+    document.getElementById("story").value="";
+    showPage("menu");
+}
+
+function showPage(page){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+}
+
+function toggleMusic(){
+    if(music.paused){
+        music.play();
+    }else{
+        music.pause();
+    }
+}
+
+function changeVolume(val){
+    music.volume=val;
+}
+</script>
+
+</body>
+</html>
